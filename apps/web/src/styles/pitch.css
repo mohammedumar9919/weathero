@@ -1,0 +1,193 @@
+/* Pitch landing — solid bento cards, zero backdrop-filter (D27 budget for dashboard only) */
+
+.pitch-shell {
+  --font-pitch: "Outfit", system-ui, sans-serif;
+  font-family: var(--font-pitch);
+  max-width: 72rem;
+}
+
+.pitch-landing {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: calc(100dvh - 2.5rem);
+  padding-bottom: 6rem;
+}
+
+.pitch-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.pitch-eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pitch-headline {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.pitch-subcopy {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.pitch-bento-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .pitch-bento-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pitch-bento-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.08);
+  min-height: 100%;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-bento-card:hover {
+    border-color: rgba(56, 189, 248, 0.45);
+    transform: translateY(-2px);
+  }
+}
+
+.pitch-bento-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.pitch-bento-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.pitch-bento-copy {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.pitch-social-proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.pitch-proof-badge {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.pitch-proof-detail {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.pitch-cta-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.98) 70%,
+    rgba(10, 10, 10, 0)
+  );
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.pitch-cta {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-pitch);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.pitch-cta:hover {
+  opacity: 0.92;
+}
+
+.pitch-cta:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.pitch-cta:active {
+  transform: scale(0.98);
+}
+
+.pitch-cta-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.pitch-cta-hint code {
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 390px) {
+  .pitch-landing {
+    gap: 2.25rem;
+  }
+}

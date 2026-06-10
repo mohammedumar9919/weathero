@@ -1,0 +1,25 @@
+council:
+  name: Weathero Engineering Board
+  agents:
+    - id: lead_chairman
+      role: Lead orchestrator
+      expertise: [phase_gates, merges, docs, task_cards]
+    - id: agent_backend
+      role: API and weather services
+      expertise: [fastapi, sqlalchemy, openweather, open_meteo, cache]
+    - id: agent_core
+      role: Gate and condition mapping
+      expertise: [gate, condition_codes, bundle_validation]
+    - id: agent_frontend
+      role: Web and ambient UX
+      expertise: [react, vite, hours_strip, ambient_canvas]
+    - id: agent_qa
+      role: Eval and replay
+      expertise: [golden_fixtures, replay_mock, phase_gates]
+  rules:
+    council_required_for:
+      - apps/api/app/services/gate.py
+      - apps/api/app/services/condition_codes.py
+      - apps/api/app/services/weather_service.py
+      - docs/api-contracts.md
+      - eval/golden_fixtures.jsonl
