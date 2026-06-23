@@ -7,11 +7,12 @@ import {
   CloudRain,
   CloudSnow,
   Sun,
+  X,
 } from "lucide-react";
 import type { ComponentType } from "react";
 import type { WeatherEnvelope } from "../types/weather";
 import { fetchWeatherEnvelope, weatherKey } from "../hooks/useWeatherBundle";
-import { useSavedLocations } from "../hooks/useSavedLocations";
+import { useSavedLocationsActions } from "../hooks/useSavedLocations";
 import { useUnits } from "../hooks/useUnits";
 import { formatCondition } from "../utils/weatherFormat";
 import { formatTemp } from "../utils/temperature";
@@ -49,7 +50,7 @@ export function SavedCityCarousel({
   activeCity,
   onSelectCity,
 }: SavedCityCarouselProps) {
-  const { data: locations, isLoading } = useSavedLocations();
+  const { data: locations, isLoading, remove } = useSavedLocationsActions();
   const { unit } = useUnits();
   const { cache } = useSWRConfig();
   const prefetchTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -73,6 +74,17 @@ export function SavedCityCarousel({
     clearTimeout(prefetchTimer.current);
   }, []);
 
+  const handleRemove = useCallback(
+    async (id: number) => {
+      try {
+        await remove(id);
+      } catch (err) {
+        console.warn("SavedCityCarousel: remove failed", err);
+      }
+    },
+    [remove],
+  );
+
   if (isLoading) {
     return (
       <div className="saved-carousel saved-carousel-loading" aria-busy="true">
@@ -85,8 +97,7 @@ export function SavedCityCarousel({
   if (!locations?.length) {
     return (
       <p className="saved-carousel-empty">
-        Save up to 3 cities via the API to see them here. Demo: POST{" "}
-        <code>/api/v1/locations</code> for Hyderabad, Chennai, Mumbai.
+        No saved cities yet. Search a city and tap the star to save it (up to 7).
       </p>
     );
   }
@@ -95,7 +106,7 @@ export function SavedCityCarousel({
     <section className="saved-carousel" aria-label="Saved cities">
       <h2 className="saved-carousel-heading">Saved cities</h2>
       <ul className="saved-carousel-track">
-        {locations.slice(0, 3).map((loc) => {
+        {locations.slice(0, 7).map((loc) => {
           const displayName = loc.city;
           const cached = getCachedEnvelope(
             cache as Map<string, unknown>,
@@ -111,7 +122,7 @@ export function SavedCityCarousel({
             : "—";
 
           return (
-            <li key={loc.id}>
+            <li key={loc.id} className="saved-carousel-item">
               <button
                 type="button"
                 className={`saved-carousel-card${isActive ? " saved-carousel-card-active" : ""}`}
@@ -126,6 +137,18 @@ export function SavedCityCarousel({
                 <Icon size={20} aria-hidden className="saved-carousel-icon" />
                 <span className="saved-carousel-name">{displayName}</span>
                 <span className="saved-carousel-temp">{temp}</span>
+              </button>
+              <button
+                type="button"
+                className="saved-carousel-remove"
+                aria-label={`Remove ${displayName}`}
+                title={`Remove ${displayName}`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  void handleRemove(loc.id);
+                }}
+              >
+                <X size={14} aria-hidden="true" />
               </button>
             </li>
           );

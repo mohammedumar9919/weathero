@@ -16,7 +16,7 @@ foreach ($city in $Cities) {
     }
     catch {
         if ($_.Exception.Response.StatusCode.value__ -eq 400) {
-            Write-Host "  saved skip (max 3 or duplicate): $city" -ForegroundColor DarkYellow
+            Write-Host "  saved skip (max 7 or duplicate): $city" -ForegroundColor DarkYellow
         }
         else { throw }
     }

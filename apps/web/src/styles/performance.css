@@ -219,13 +219,162 @@ body {
   }
 }
 
-/* Ambient canvas — behind all UI, never intercepts taps (D28) */
+/* Ambient canvas v2 — theme orbs via CSS @keyframes; PRM = static gradient */
 .ambient-canvas {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  transition: background 0.8s ease;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.ambient-canvas-base {
+  position: absolute;
+  inset: 0;
+  transition: opacity 300ms ease, background 300ms ease;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.55;
+  will-change: transform;
+  transition: background 300ms ease, opacity 300ms ease;
+}
+
+.ambient-orb-primary {
+  width: min(70vw, 520px);
+  height: min(70vw, 520px);
+  top: -12%;
+  left: 18%;
+  animation: ambient-drift-a 32s ease-in-out infinite;
+}
+
+.ambient-orb-secondary {
+  width: min(55vw, 420px);
+  height: min(55vw, 420px);
+  bottom: 8%;
+  right: -8%;
+  animation: ambient-drift-b 26s ease-in-out infinite;
+}
+
+@keyframes ambient-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(6%, 4%) scale(1.06);
+  }
+  66% {
+    transform: translate(-4%, 7%) scale(0.94);
+  }
+}
+
+@keyframes ambient-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-8%, -5%) scale(1.08);
+  }
+}
+
+.ambient-canvas[data-theme="clear"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #0c1222 0%, #0a0a0a 72%);
+}
+
+.ambient-canvas[data-theme="clear"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="clear"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.28) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="cloud"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #111827 0%, #0a0a0a 75%);
+}
+
+.ambient-canvas[data-theme="cloud"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.35) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="cloud"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(100, 116, 139, 0.22) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="rain"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #0f172a 0%, #0a0a0a 70%);
+}
+
+.ambient-canvas[data-theme="rain"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="rain"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="storm"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #0b0f1a 0%, #0a0a0a 80%);
+}
+
+.ambient-canvas[data-theme="storm"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.42) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="storm"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.28) 0%, transparent 70%);
+  animation-duration: 22s;
+}
+
+.ambient-canvas[data-theme="snow"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #0f1419 0%, #0a0a0a 75%);
+}
+
+.ambient-canvas[data-theme="snow"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(186, 230, 253, 0.32) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="snow"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(224, 242, 254, 0.2) 0%, transparent 70%);
+  animation-duration: 38s;
+}
+
+.ambient-canvas[data-theme="fog"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #141414 0%, #0a0a0a 80%);
+}
+
+.ambient-canvas[data-theme="fog"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(161, 161, 170, 0.28) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="fog"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(113, 113, 122, 0.18) 0%, transparent 70%);
+  animation-duration: 40s;
+}
+
+.ambient-canvas[data-theme="atmosphere"] .ambient-canvas-base {
+  background: linear-gradient(180deg, #120f1a 0%, #0a0a0a 75%);
+}
+
+.ambient-canvas[data-theme="atmosphere"] .ambient-orb-primary {
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.35) 0%, transparent 70%);
+}
+
+.ambient-canvas[data-theme="atmosphere"] .ambient-orb-secondary {
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.22) 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 .showpiece-layout {
@@ -351,6 +500,25 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
+  transition: box-shadow 300ms ease;
+}
+
+.showpiece-layout[data-temp-band="mild"] .hero-weather {
+  box-shadow:
+    0 0 28px rgba(125, 211, 252, 0.22),
+    inset 0 0 0 1px rgba(125, 211, 252, 0.12);
+}
+
+.showpiece-layout[data-temp-band="warm"] .hero-weather {
+  box-shadow:
+    0 0 28px rgba(252, 211, 77, 0.22),
+    inset 0 0 0 1px rgba(252, 211, 77, 0.12);
+}
+
+.showpiece-layout[data-temp-band="hot"] .hero-weather {
+  box-shadow:
+    0 0 32px rgba(251, 146, 60, 0.28),
+    inset 0 0 0 1px rgba(251, 146, 60, 0.14);
 }
 
 .hero-temp {
@@ -359,7 +527,8 @@ body {
   font-weight: 700;
   line-height: 1;
   color: var(--text-primary);
-  transition: color 300ms ease, transform 300ms ease;
+  font-variant-numeric: tabular-nums;
+  transition: color 300ms ease, transform 300ms ease, opacity 200ms ease;
 }
 
 .showpiece-layout[data-temp-band="mild"] .hero-temp {
@@ -399,6 +568,21 @@ body {
   margin: 0 0 0.375rem;
   font-size: 1.5rem;
   font-weight: 600;
+  transition: opacity 200ms ease;
+}
+
+.showpiece-glass.hero-weather.showpiece-enter-2 .hero-city,
+.showpiece-glass.hero-weather.showpiece-enter-2 .hero-temp {
+  animation: hero-content-fade 320ms ease both;
+}
+
+@keyframes hero-content-fade {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .hero-condition {
@@ -467,6 +651,22 @@ body {
   border-radius: 0.875rem;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid rgba(56, 189, 248, 0.35);
+}
+
+@keyframes today-brief-accent-pulse {
+  0% {
+    border-left-color: transparent;
+    box-shadow: none;
+  }
+  40% {
+    border-left-color: var(--accent);
+    box-shadow: -4px 0 12px rgba(56, 189, 248, 0.25);
+  }
+  100% {
+    border-left-color: rgba(56, 189, 248, 0.35);
+    box-shadow: none;
+  }
 }
 
 .today-brief-text {
@@ -551,6 +751,20 @@ body {
   border-radius: 0.75rem;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .metrics-bento-tile:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(56, 189, 248, 0.18);
+  }
 }
 
 .metrics-bento-icon {
@@ -570,6 +784,7 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   line-height: 1.3;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Staggered enter — max 3 animated children (V2) */
@@ -588,6 +803,12 @@ body {
   animation: showpiece-enter 0.45s ease both;
 }
 
+.today-brief.showpiece-enter-1 {
+  animation:
+    showpiece-enter 0.45s ease both,
+    today-brief-accent-pulse 1.4s ease 0.45s 1;
+}
+
 .showpiece-enter-2 {
   animation: showpiece-enter 0.45s ease 0.08s both;
 }
@@ -601,6 +822,20 @@ body {
   .showpiece-enter-2,
   .showpiece-enter-3 {
     animation: none;
+  }
+
+  .today-brief.showpiece-enter-1 {
+    border-left-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .showpiece-glass.hero-weather.showpiece-enter-2 .hero-city,
+  .showpiece-glass.hero-weather.showpiece-enter-2 .hero-temp {
+    animation: none;
+  }
+
+  .metrics-bento-tile:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   .showpiece-layout[data-temp-band] .hero-temp {
@@ -709,6 +944,7 @@ body {
 .wind-compass-value {
   font-size: 1.125rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .wind-compass-note {
@@ -799,6 +1035,7 @@ body {
 .hours-strip-temp {
   font-weight: 600;
   font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .hours-strip-rain {
@@ -1238,6 +1475,11 @@ body {
     transition: none;
   }
 
+  .ambient-orb {
+    animation: none !important;
+    transform: none !important;
+  }
+
   .wind-compass-arrow {
     transition: none;
   }
@@ -1265,5 +1507,100 @@ body {
 
   .ambient-canvas {
     opacity: 0.85;
+  }
+}
+
+/* Save current city button (header) */
+.save-city-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 0;
+  color: var(--accent);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.save-city-button:hover:not(:disabled) {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: var(--accent);
+}
+
+.save-city-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.save-city-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.save-city-button-active {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.45);
+  background: rgba(251, 191, 36, 0.12);
+}
+
+.save-city-button-active:hover:not(:disabled) {
+  background: rgba(251, 191, 36, 0.18);
+  border-color: #fbbf24;
+}
+
+/* Saved-city carousel card remove button */
+.saved-carousel-item {
+  position: relative;
+}
+
+.saved-carousel-remove {
+  position: absolute;
+  top: -0.375rem;
+  right: -0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--text-muted);
+  background: rgba(20, 20, 20, 0.92);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.saved-carousel-item:hover .saved-carousel-remove,
+.saved-carousel-item:focus-within .saved-carousel-remove,
+.saved-carousel-remove:focus-visible {
+  opacity: 1;
+}
+
+.saved-carousel-remove:hover {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.55);
+}
+
+.saved-carousel-remove:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Keep remove affordance visible without hover on touch / reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .saved-carousel-remove {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .saved-carousel-remove {
+    opacity: 1;
   }
 }

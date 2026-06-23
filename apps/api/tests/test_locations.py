@@ -14,18 +14,18 @@ def test_post_location_creates_saved_entry(api_client: TestClient):
     assert data["session_id"] == "sess-1"
 
 
-def test_max_three_locations_per_session(api_client: TestClient):
+def test_max_seven_locations_per_session(api_client: TestClient):
     session_id = "sess-max"
-    for city in ("CityA", "CityB", "CityC"):
+    for n in range(1, 8):
         resp = api_client.post(
             "/api/v1/locations",
-            json={"session_id": session_id, "city": city},
+            json={"session_id": session_id, "city": f"City{n}"},
         )
         assert resp.status_code == 201
 
     overflow = api_client.post(
         "/api/v1/locations",
-        json={"session_id": session_id, "city": "CityD"},
+        json={"session_id": session_id, "city": "City8"},
     )
     assert overflow.status_code == 400
     assert "max" in overflow.json()["detail"].lower()

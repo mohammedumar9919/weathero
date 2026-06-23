@@ -9,6 +9,7 @@ import { AmbientCanvas } from "./components/AmbientCanvas";
 import { HeroWeather } from "./components/HeroWeather";
 import { CitySearch } from "./components/CitySearch";
 import { RefreshButton } from "./components/RefreshButton";
+import { SaveCityButton } from "./components/SaveCityButton";
 import { UnitToggle } from "./components/UnitToggle";
 import { AttributionFooter } from "./components/AttributionFooter";
 import { ComparePreflight } from "./components/ComparePreflight";
@@ -53,6 +54,7 @@ function WeatherDashboard() {
           <CitySearch city={city} onCityChange={setCity} />
           <UnitToggle />
           <RefreshButton mutate={mutate} isValidating={isValidating} />
+          <SaveCityButton city={city} />
         </header>
 
         <Suspense fallback={<ShipFeaturesFallback />}>

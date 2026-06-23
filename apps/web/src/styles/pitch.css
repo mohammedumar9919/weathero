@@ -144,6 +144,8 @@
 }
 
 .pitch-cta {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   min-height: var(--tap-min);
   padding: 0.75rem 1.25rem;
@@ -156,6 +158,45 @@
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pitch-cta::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgba(255, 255, 255, 0.38) 50%,
+      transparent 62%
+    );
+    transform: translateX(-130%);
+    animation: pitch-cta-shimmer 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes pitch-cta-shimmer {
+  0%,
+  72%,
+  100% {
+    transform: translateX(-130%);
+    opacity: 0;
+  }
+  78% {
+    opacity: 1;
+  }
+  86% {
+    transform: translateX(130%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-cta::after {
+    display: none;
+  }
 }
 
 .pitch-cta:hover {

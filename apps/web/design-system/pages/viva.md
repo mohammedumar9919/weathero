@@ -38,6 +38,15 @@
 
 - `prefers-reduced-motion`: disable card hover translate; keep color transitions only
 
+## V6 polish (CSS-only, `viva-polish` branch)
+
+- **AmbientCanvas v2:** animated theme orbs (20–40s loops); 300ms theme crossfade; PRM = static gradient
+- **Hero glow:** `data-temp-band` box-shadow halo on `.hero-weather` — no extra blur layer
+- **Bento hover:** metrics tile lift + border glow (display-only, no pointer)
+- **TodayBrief:** one-shot left-border pulse on load (stagger slot 1)
+- **Pitch CTA:** opacity shimmer — no backdrop-filter
+- **Typography:** `tabular-nums` on temps/metrics
+
 ## Copy pillars (rule-based, no LLM)
 
 1. **Trust** — provenance chip, cache honesty, hybrid providers  

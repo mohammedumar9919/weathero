@@ -240,7 +240,7 @@ Omitted when OWM Air Pollution fetch fails or provider is Open-Meteo fallback.
 | `id` | serial PK | |
 | `session_id` | text | Client session |
 | `city` | text | |
-| `sort_order` | int | Max 3 per session |
+| `sort_order` | int | Max 7 per session |
 
 ---
 

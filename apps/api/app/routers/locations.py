@@ -1,4 +1,4 @@
-"""Saved locations CRUD — max 3 per session."""
+"""Saved locations CRUD — max 7 per session."""
 
 from __future__ import annotations
 

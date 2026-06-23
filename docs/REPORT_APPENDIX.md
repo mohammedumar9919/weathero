@@ -9,7 +9,7 @@
 | Provider strategy | OWM 2-call + Open-Meteo fallback | Proprietary | Single-provider typical |
 | Cache / offline honesty | 45m JSONB + SWR; provenance chip | Opaque | Varies |
 | Compare mode | Cache-only client compare | No | Rare |
-| Saved cities | Max 3, session-scoped | Unlimited iCloud | Varies |
+| Saved cities | Max 7, session-scoped | Unlimited iCloud | Varies |
 | Eval / gate | 56/56 pytest + 12 replay + 22 vitest | N/A | Uncommon in student projects |
 | Bundle contract | v1.3.0 envelope + today_brief + gate.py | Closed | Ad hoc |
 | Pitch / trust UI | `?view=pitch` landing + Trust drawer + Share | N/A | Rare in student scope |

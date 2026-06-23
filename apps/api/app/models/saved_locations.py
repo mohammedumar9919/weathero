@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
 
-MAX_SAVED_LOCATIONS = 3
+MAX_SAVED_LOCATIONS = 7
 
 
 class SavedLocation(Base):
