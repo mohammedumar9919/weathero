@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MoonPhase > renders a deterministic phase snapshot for a fixed date 1`] = `
+{
+  "label": "Moon phase: Full, 99% illuminated",
+  "meta": "99% lit · waxing",
+  "name": "Full",
+}
+`;

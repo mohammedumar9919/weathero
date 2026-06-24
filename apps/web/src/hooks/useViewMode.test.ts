@@ -3,6 +3,8 @@ import {
   getViewFromUrl,
   setViewInUrl,
   launchApp,
+  getPanelFromUrl,
+  setPanelInUrl,
 } from "./useViewMode";
 
 describe("useViewMode URL helpers", () => {
@@ -32,5 +34,29 @@ describe("useViewMode URL helpers", () => {
     const urlArg = pushState.mock.calls[0]?.[2] as string;
     expect(urlArg).toContain("city=Hyderabad");
     expect(urlArg).toContain("view=app");
+  });
+});
+
+describe("useViewMode panel substate", () => {
+  beforeEach(() => {
+    window.history.replaceState({}, "", "/");
+  });
+
+  it("parses panel from the query string and defaults to dashboard", () => {
+    expect(getPanelFromUrl("?panel=charts")).toBe("charts");
+    expect(getPanelFromUrl("?panel=moon")).toBe("moon");
+    expect(getPanelFromUrl("?panel=bogus")).toBe("dashboard");
+    expect(getPanelFromUrl("")).toBe("dashboard");
+  });
+
+  it("writes non-default panels to the URL and drops the default", () => {
+    const replaceState = vi.spyOn(window.history, "replaceState");
+    setPanelInUrl("charts");
+    const setArg = replaceState.mock.calls[0]?.[2] as string;
+    expect(setArg).toContain("panel=charts");
+
+    setPanelInUrl("dashboard");
+    const clearedArg = replaceState.mock.calls[1]?.[2] as string;
+    expect(clearedArg).not.toContain("panel=");
   });
 });

@@ -11,11 +11,16 @@
   },
   "dependencies": {
     "lucide-react": "^0.511.0",
+    "lunarphase-js": "^2.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "recharts": "^2.15.0",
+    "simplex-noise": "^4.0.3",
     "swr": "^2.3.3"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
@@ -23,5 +28,8 @@
     "typescript": "~5.7.2",
     "vite": "^6.0.3",
     "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "react-is": "^19.0.0"
   }
 }

@@ -25,9 +25,17 @@ const FEATURES = [
 export function PitchLanding() {
   return (
     <div className="pitch-landing">
+      <div className="pitch-aurora" aria-hidden="true">
+        <span className="pitch-aurora-blob pitch-aurora-a" />
+        <span className="pitch-aurora-blob pitch-aurora-b" />
+        <span className="pitch-aurora-grid" />
+      </div>
+
       <header className="pitch-hero">
         <p className="pitch-eyebrow">Team A15 · MJCET Mini Project</p>
-        <h1 className="pitch-headline">Weather you can verify.</h1>
+        <h1 className="pitch-headline">
+          Weather you can <span className="pitch-headline-accent">verify</span>.
+        </h1>
         <p className="pitch-subcopy">
           Weathero is an ambient OLED dashboard with a versioned weather envelope,
           rule-based advisories, and deterministic eval — Tier 0 scope, no maps,

@@ -1,0 +1,341 @@
+/* Slice W (W2) — Sidebar, TemperatureChart, MoonPhase, AmbientBackground.
+   Append-only; imported by the components that need it. */
+
+/* ----------------------------------------------------------------------------
+   Ambient background (Canvas 2D particle field + static fallback)
+   The themed gradient lives here so the canvas can stay transparent.
+---------------------------------------------------------------------------- */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.ambient-bg-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Themed base gradient — shared by static + canvas variants. */
+.ambient-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #0c1222 0%, #0a0a0a 72%);
+  transition: background 700ms ease;
+}
+
+.ambient-bg[data-theme="cloud"]::before {
+  background: linear-gradient(180deg, #111827 0%, #0a0a0a 75%);
+}
+.ambient-bg[data-theme="rain"]::before {
+  background: linear-gradient(180deg, #0f172a 0%, #0a0a0a 70%);
+}
+.ambient-bg[data-theme="storm"]::before {
+  background: linear-gradient(180deg, #0b0f1a 0%, #0a0a0a 80%);
+}
+.ambient-bg[data-theme="snow"]::before {
+  background: linear-gradient(180deg, #0f1419 0%, #0a0a0a 75%);
+}
+.ambient-bg[data-theme="fog"]::before {
+  background: linear-gradient(180deg, #141414 0%, #0a0a0a 80%);
+}
+.ambient-bg[data-theme="atmosphere"]::before {
+  background: linear-gradient(180deg, #120f1a 0%, #0a0a0a 75%);
+}
+
+/* Static fallback adds a soft themed glow so it doesn't look flat. */
+.ambient-bg-static::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 25% 12%, rgba(56, 189, 248, 0.22), transparent 70%),
+    radial-gradient(55% 45% at 85% 88%, rgba(14, 165, 233, 0.16), transparent 72%);
+  opacity: 0.9;
+}
+.ambient-bg-static[data-theme="storm"]::after,
+.ambient-bg-static[data-theme="atmosphere"]::after {
+  background:
+    radial-gradient(60% 50% at 25% 12%, rgba(167, 139, 250, 0.22), transparent 70%),
+    radial-gradient(55% 45% at 85% 88%, rgba(139, 92, 246, 0.16), transparent 72%);
+}
+.ambient-bg-static[data-theme="snow"]::after,
+.ambient-bg-static[data-theme="fog"]::after,
+.ambient-bg-static[data-theme="cloud"]::after {
+  background:
+    radial-gradient(60% 50% at 25% 12%, rgba(186, 230, 253, 0.16), transparent 70%),
+    radial-gradient(55% 45% at 85% 88%, rgba(148, 163, 184, 0.12), transparent 72%);
+}
+
+/* ----------------------------------------------------------------------------
+   Sidebar — icon rail expands on hover / focus / click
+---------------------------------------------------------------------------- */
+.sidebar {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  z-index: 5;
+}
+
+.sidebar-rail {
+  flex: 0 0 auto;
+}
+
+.sidebar-rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+}
+
+.sidebar-rail-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: 0 0.625rem;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.sidebar-rail-button:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.sidebar-rail-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sidebar-rail-button-active {
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.14);
+  border-color: var(--accent);
+}
+
+.sidebar-rail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Collapsed: hide labels, keep icon-only 44px targets. Expand reveals them. */
+.sidebar-rail-label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 0.24s ease, opacity 0.18s ease;
+}
+
+.sidebar[data-expanded="true"] .sidebar-rail-label {
+  max-width: 9rem;
+  opacity: 1;
+}
+
+/* Reduced motion: no slide — labels just appear. */
+.sidebar[data-motion="reduced"] .sidebar-rail-label {
+  transition: none;
+}
+
+.sidebar-panel {
+  flex: 1 1 auto;
+  margin-left: 0.75rem;
+  min-width: 14rem;
+  max-width: 22rem;
+  padding: 1rem 1.125rem;
+  background: rgba(20, 20, 20, 0.92);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  animation: sidebar-panel-in 0.22s ease both;
+}
+
+.sidebar[data-motion="reduced"] .sidebar-panel {
+  animation: none;
+}
+
+@keyframes sidebar-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sidebar-panel:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sidebar-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar-panel-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.sidebar-panel-close {
+  min-height: 2rem;
+  padding: 0.25rem 0.625rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.sidebar-panel-close:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sidebar-panel-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.sidebar-panel-placeholder-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sidebar-panel-placeholder-copy {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------------
+   Temperature chart (lazy Recharts)
+---------------------------------------------------------------------------- */
+.temp-chart {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.temp-chart-canvas {
+  width: 100%;
+  height: 12rem;
+}
+
+.temp-chart-empty {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------------
+   Moon phase
+---------------------------------------------------------------------------- */
+.moon-phase {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.moon-phase-disc {
+  position: relative;
+  flex: 0 0 auto;
+  width: 4.5rem;
+  height: 4.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.moon-phase-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.moon-phase-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 6;
+}
+
+.moon-phase-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 600ms ease;
+}
+
+.moon-phase-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.moon-phase-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.moon-phase-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.moon-phase-meta {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-rail-label,
+  .sidebar-panel,
+  .moon-phase-ring-fill,
+  .ambient-bg::before {
+    transition: none;
+    animation: none;
+  }
+}
