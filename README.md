@@ -1,43 +1,54 @@
 # Weathero
 
-6th Sem Mini Project — MJCET. Ambient weather dashboard with hybrid provider strategy.
-
-**Team A15** | Student: Mohammed Umar Salam
+Ambient **weather dashboard** with a FastAPI backend, React / TypeScript frontend, and Postgres. Pulls from multiple weather providers, caches intelligently, and includes an optional LLM assistant with a rule-based fallback.
 
 ## Stack
 
-- **API:** FastAPI + SQLAlchemy + Alembic + Postgres 16 (`:5435`)
-- **Web:** Vite + React + TypeScript
-- **Orchestration:** GSD Redux + Superpowers + Karpathy council
+| Layer | Technology |
+|-------|------------|
+| API | FastAPI, SQLAlchemy, Alembic, Postgres 16 |
+| Web | Vite, React, TypeScript, Framer Motion, Recharts |
+| Auth | JWT + Argon2 |
+| Assistant | Groq LLM when configured; rule engine otherwise |
+| Tests | pytest (API), Vitest (UI) |
+| Infra | Docker Compose |
 
-## Quick start (Slice A)
+## Features
+
+- Multi-provider weather ingest with caching
+- Compare cities, ambient panels, moon / sun data
+- Premium motion UI with reduced-motion support
+- Demo login seed for local demos
+- Rate limiting and health checks on the API
+
+## Quick start
 
 ```powershell
-cd C:\Projects\weathero
 docker compose up -d
 cd apps\api
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
-pytest tests/test_gate.py tests/test_condition_codes.py -v
+pytest tests/ -q
 cd ..\web
 npm install
 npm run build
-cd ..\..
-.\scripts\phase_gate.ps1 -Slice A
+npm run dev
 ```
 
-## Slices
+API default (check `apps/api/.env.example`): often port **8001**.
 
-| Slice | Scope | Gate |
-|-------|-------|------|
-| A | Foundation scaffold | Gate A |
-| B | Weather API + cache | Gate B |
-| C | Showpiece UI | Gate C |
-| D | Eval + replay | Gate D |
+Demo credentials (when seed is run): see `docs/CURRENT_STATE.md` or seed scripts.
 
 ## Docs
 
-- [API contracts v1.2.0](docs/api-contracts.md)
-- [Current state](docs/CURRENT_STATE.md)
-- [Worker queue](docs/WORKER_TASK_CARDS_QUEUE.md)
+- `docs/api-contracts.md` — API surface
+- `docs/CURRENT_STATE.md` — runtime status
+
+## Author
+
+Mohammed Umar Salam — MJCET mini project · [Portfolio](https://mohammedumar9919.github.io)
+
+## License
+
+MIT — see [LICENSE](LICENSE).
